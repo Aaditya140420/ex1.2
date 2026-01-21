@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bank App</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #1d2671, #c33764);
+    }
+
+    .bank {
+      width: 300px;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    .deposit {
+      background: #2ecc71;
+      color: white;
+    }
+
+    .withdraw {
+      background: #e74c3c;
+      color: white;
+    }
+
+    #message {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bank">
+    <h2>Bank Account</h2>
+    <h3>Balance: ₹<span id="balance">1000</span></h3>
+
+    <input type="number" id="amount" placeholder="Enter amount">
+
+    <button class="deposit" onclick="deposit()">Deposit</button>
+    <button class="withdraw" onclick="withdraw()">Withdraw</button>
+
+    <!-- Message will appear here -->
+    <p id="message"></p>
+  </div>
+
+  <script>
+    let balance = 1000;
+
+    const amountInput = document.getElementById("amount");
+    const messageEl = document.getElementById("message");
+
+    
+    amountInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        deposit();
+      }
+    });
+
+    function showMessage(text, color) {
+      messageEl.innerText = text;
+      messageEl.style.color = color;
+    }
+
+    function clearMessage() {
+      messageEl.innerText = "";
+    }
+
+    function deposit() {
+      let amt = Number(amountInput.value);
+
+      if (amountInput.value === "") {
+        alert("Please enter an amount");
+        return;
+      }
+
+      if (amt <= 0) {
+        alert("Enter a valid amount");
+        return;
+      }
+
+      balance += amt;
+      showMessage("✅ Amount deposited successfully", "green");
+      update();
+    }
+
+    function withdraw() {
+      let amt = Number(amountInput.value);
+
+      if (amountInput.value === "") {
+        alert("Please enter an amount");
+        return;
+      }
+
+      if (amt <= 0) {
+        alert("Enter a valid amount");
+        return;
+      }
+
+      if (amt > balance) {
+        showMessage(
+          `❌ Insufficient Balance (Available: ₹${balance})`,
+          "red"
+        );
+        return;
+      }
+
+      balance -= amt;
+      showMessage("✅ Amount withdrawn successfully", "green");
+      update();
+    }
+
+    function update() {
+      document.getElementById("balance").innerText = balance;
+      amountInput.value = "";
+      amountInput.focus();
+    }
+  </script>
+
+</body>
+</html>
